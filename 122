@@ -1,0 +1,43 @@
+## 分析
+
+是个在线 DP 问题，用贪心做。
+如果第 k 天比第 k+1 天价格低，则在第 k 天买进；反之则卖出。
+
+
+## C++
+
+```c++
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if(prices.empty()==true || prices.size()==1)
+            return 0;
+        // true: 买进; false: 卖出
+        bool isBuy = true;
+        // 总利润
+        int mp = 0;
+        int price=prices[0];
+        // 在结尾补个 0 防 bug
+        prices.push_back(0);
+        for(auto it=prices.begin()+1; it != prices.end(); it++){
+            if(*it < price && isBuy == true){
+                price = *it;
+            }
+            if(*it > price && isBuy == true){
+                mp -= price;
+                price = *it;
+                isBuy = false;
+            }
+            if(*it > price && isBuy == false){
+                price = *it;
+            }
+            if(*it < price && isBuy == false){
+                mp += price;
+                price = *it;
+                isBuy = true;
+            }
+        }
+        return mp;
+    }
+};
+```
